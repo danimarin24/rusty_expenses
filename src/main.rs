@@ -15,8 +15,9 @@ fn main() {
         let cmd = cmd_prompt();
 
         match MenuOption::from_str(&cmd) {
-            Some(MenuOption::Help) => show_help(),
+            Some(MenuOption::Help) => MenuOption::list_options(),
             Some(MenuOption::Add) => add_expense(&mut expenses, &mut next_id),
+            Some(MenuOption::List) => list_expenses(&expenses),
             Some(MenuOption::Exit) => {
                 println!("Bye.");
                 break;
@@ -49,14 +50,6 @@ fn ask(prompt: &str) -> String {
 }
 
 // Command functions
-fn show_help() {
-    println!("COMMANDS");
-    println!("\thelp\tShow this help");
-    println!("\tadd\tAdd a new expense");
-    println!("\texit\tExit program");
-}
-
-    
 fn add_expense(expenses: &mut Vec<Expense>, next_id: &mut u32) {
     let date_str = ask("Date (YYYY-MM-DD)? (empty=today)");
 
@@ -115,4 +108,16 @@ fn add_expense(expenses: &mut Vec<Expense>, next_id: &mut u32) {
     *next_id += 1;
 
     println!("Added expense.")
+}
+
+fn list_expenses(expenses: &[Expense]) {
+    if expenses.is_empty() {
+        println!("No expenses found.");
+        return;
+    }
+
+    println!("Expenses:");
+    for expense in expenses {
+        println!("{}", expense);
+    }
 }
