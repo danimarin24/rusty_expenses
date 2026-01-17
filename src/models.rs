@@ -31,3 +31,21 @@ pub struct Expense {
     pub category: Category,
     pub note: String,
 }
+
+#[derive(Debug)]
+pub enum MenuOption {
+    Help,
+    Add,
+    Exit,
+}
+
+impl MenuOption {
+    pub fn from_str(s: &str) -> Option<Self> {
+        match s {
+            "help" => Some(MenuOption::Help),
+            "add" => Some(MenuOption::Add),
+            "exit" => Some(MenuOption::Exit),
+            _ => None,
+        }
+    }
+}

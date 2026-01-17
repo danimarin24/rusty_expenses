@@ -1,7 +1,7 @@
 mod models;
 
 use std::io::{self, Write};
-use models::{Expense, Category};
+use models::{Expense, Category, MenuOption};
 use chrono::{NaiveDate, Local};
 
 fn main() {
@@ -14,15 +14,14 @@ fn main() {
     loop {
         let cmd = cmd_prompt();
 
-        match cmd.as_str() {
-            "help" => show_help(),
-            "add" => add_expense(&mut expenses, &mut next_id),
-            "exit" => {
+        match MenuOption::from_str(&cmd) {
+            Some(MenuOption::Help) => show_help(),
+            Some(MenuOption::Add) => add_expense(&mut expenses, &mut next_id),
+            Some(MenuOption::Exit) => {
                 println!("Bye.");
                 break;
             }
-            "" => continue,
-            _ => println!("ERR: Unknown command. Type 'help'."),
+            None => println!("ERR: Unknown command. Type 'help'."),
         }
     }
 }
@@ -57,6 +56,7 @@ fn show_help() {
     println!("\texit\tExit program");
 }
 
+    
 fn add_expense(expenses: &mut Vec<Expense>, next_id: &mut u32) {
     let date_str = ask("Date (YYYY-MM-DD)? (empty=today)");
 
